@@ -1,8 +1,26 @@
-import actor from "../actor.json" assert { type: "json" };
 import { stripHtml as stringStripHtml } from "string-strip-html";
 import { config } from "./config.ts";
 
-export type Actor = (typeof actor)[number];
+export type Actor = {
+    name: string;
+    signature: string;
+    descriptionToCompletion: string;
+};
+
+let actor: Actor[];
+
+try {
+    actor = JSON.parse(await Deno.readTextFile("./actor.json"));
+    console.log("local actor.json loaded");
+} catch (e) {
+    console.error(e);
+    console.log("actor.json not found, try downloading from env url");
+    const res = await fetch(config.ACTOR_JSON_URL);
+    const json = await res.json();
+    console.log("downloaded actor.json");
+    console.log(json);
+    actor = json;
+}
 
 // ランダムなactorを変えす。seedTextが同じなら同じactorを返す。
 export function getRandomActor(seedText: string) {

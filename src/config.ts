@@ -3,6 +3,7 @@ import "https://deno.land/std@0.188.0/dotenv/load.ts";
 const configKeys = {
     DEBUG_FORCE_REPLY: Deno.env.get("DEBUG_FORCE_REPLY") === "true",
     SECRET: Deno.env.get("SECRET"),
+    ACTOR_JSON_URL: Deno.env.get("ACTOR_JSON_URL"),
     LUCK_PERCENTAGE: Number(Deno.env.get("LUCK_PERCENTAGE")),
     REACTION_ACCT_WHITELIST: Deno.env
         .get("REACTION_ACCT_WHITELIST")
