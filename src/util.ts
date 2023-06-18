@@ -1,5 +1,6 @@
 import { stripHtml as stringStripHtml } from "string-strip-html";
 import { config } from "./config.ts";
+import { parse } from "std/jsonc/parse.ts";
 
 export type Actor = {
     name: string;
@@ -10,17 +11,22 @@ export type Actor = {
 let actor: Actor[];
 
 try {
-    actor = JSON.parse(await Deno.readTextFile("./actor.json"));
-    console.log("local actor.json loaded");
+    actor = parse(await Deno.readTextFile("./actor.jsonc")) as Actor[];
+    console.log(`local actor.jsonc loaded.`);
 } catch (e) {
     console.error(e);
-    console.log("actor.json not found, try downloading from env url");
-    const res = await fetch(config.ACTOR_JSON_URL);
-    const json = await res.json();
-    console.log("downloaded actor.json");
-    console.log(json);
-    actor = json;
+    console.log("actor.jsonc not found, try downloading from env url");
+    const res = await fetch(config.ACTOR_JSONC_URL);
+    const jsonc = parse(await res.text()) as Actor[];
+    console.log("downloaded actor.jsonc");
+    console.log(jsonc);
+    actor = jsonc;
 }
+console.log(
+    `loaded ${actor.length} actor(s). ${actor
+        .map((a) => a.signature)
+        .join(", ")}.`
+);
 
 // ランダムなactorを変えす。seedTextが同じなら同じactorを返す。
 export function getRandomActor(seedText: string) {
