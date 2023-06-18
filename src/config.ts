@@ -8,6 +8,7 @@ const configKeys = {
     REACTION_ACCT_WHITELIST: Deno.env
         .get("REACTION_ACCT_WHITELIST")
         ?.split(","),
+    BOT_USE_SIGNATURES: Deno.env.get("BOT_USE_SIGNATURES") === "true",
     OPENAI_API_KEY: Deno.env.get("OPENAI_API_KEY"),
     MASTODON_BOT_HOST: Deno.env.get("MASTODON_BOT_HOST"),
     MASTODON_BOT_ACCT: Deno.env.get("MASTODON_BOT_ACCT"),

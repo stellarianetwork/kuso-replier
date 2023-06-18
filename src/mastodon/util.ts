@@ -16,5 +16,8 @@ export function createPostTextFromCompletion(
     toAcct: string,
     completion: string
 ) {
-    return addSignatureToText(signature, `@${toAcct} ${completion}`);
+    if (config.BOT_USE_SIGNATURES) {
+        return addSignatureToText(signature, `@${toAcct} ${completion}`);
+    }
+    return `@${toAcct} ${completion}`;
 }

@@ -74,6 +74,7 @@ serve(async (req: Request): Promise<Response> => {
         const completion = await generateChatCompletion({
             posts: [
                 ...context.ancestors.map((post) => ({
+                    // removeSignatureFromTextは、BOT_USE_SIGNATURES設定によらず呼び出す
                     text: removeSignatureFromText(
                         actor.signature,
                         stripHtml(post.content)
