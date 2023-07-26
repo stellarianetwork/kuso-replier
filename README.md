@@ -8,7 +8,7 @@ Throw human-like replies to my posts using Notestock's webhook feature and ChatG
 
 ```bash
 # start the dev server
-deno tasks dev
+deno task dev
 ```
 
 Notestock can't deliver posts directly to webhooks running on your computer, so you probably need something to bridge. My recommendation is [smee.io](https://smee.io/) (it's like ngrok for webhooks).
