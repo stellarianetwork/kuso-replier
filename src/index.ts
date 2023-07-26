@@ -42,15 +42,16 @@ serve(async (req: Request): Promise<Response> => {
 
     const botClient = await createClient();
 
-    const postIsReply = !!post.inReplyTo;
+    const postIsReply = !!post.tag.find((tag) => tag.type === "Mention");
     if (postIsReply) {
-        const postIsReplyToBot = post.inReplyTo?.includes(
-            `/users/${config.MASTODON_BOT_ACCT}/statuses/`
+        const postIsReplyToBot = post.tag.find(
+            (tag) => tag.type === "Mention" && tag.name === "@" + config.MASTODON_BOT_ACCT
         );
         if (!postIsReplyToBot) {
             console.log("post is reply, but not to bot");
             return new Response(null);
         }
+        console.log("post is reply to bot");
     }
 
     const postByAllowedUser = config.REACTION_ACCT_WHITELIST?.includes(
@@ -70,24 +71,45 @@ serve(async (req: Request): Promise<Response> => {
         const context = await botClient.v1.statuses.fetchContext(
             getPostIdFromUrl(post.url)
         );
-        const actor = getRandomActor(stripHtml(context.ancestors[0].content));
-        const completion = await generateChatCompletion({
-            posts: [
-                ...context.ancestors.map((post) => ({
-                    // removeSignatureFromTextは、BOT_USE_SIGNATURES設定によらず呼び出す
-                    text: removeSignatureFromText(
-                        actor.signature,
-                        stripHtml(post.content)
-                    ),
-                    by: getPosterType(post),
-                })),
-                {
-                    text: postContent,
-                    by: "user",
-                },
-            ],
-            actor,
-        });
+
+        const { actor, completion } = await (async () => {
+            if (context.ancestors.length === 0) {
+                // コンテキストがないのでいまの投稿を最初のものとして扱う
+                const actor = getRandomActor(stripHtml(post.content));
+                const completion = await generateChatCompletion({
+                    posts: [
+                        {
+                            text: stripHtml(post.content),
+                            by: "user",
+                        },
+                    ],
+                    actor,
+                });
+                return { actor, completion };
+
+            } else {
+                // actorを決めるための初期投稿を取得する
+                const actor = getRandomActor(stripHtml(context.ancestors[0].content));
+                const completion = await generateChatCompletion({
+                    posts: [
+                        ...context.ancestors.map((post) => ({
+                            // removeSignatureFromTextは、BOT_USE_SIGNATURES設定によらず呼び出す
+                            text: removeSignatureFromText(
+                                actor.signature,
+                                stripHtml(post.content)
+                            ),
+                            by: getPosterType(post),
+                        })),
+                        {
+                            text: postContent,
+                            by: "user",
+                        },
+                    ],
+                    actor,
+                });
+                return { actor, completion };
+            }
+        })()
 
         if (!completion) {
             console.error("completion is empty");

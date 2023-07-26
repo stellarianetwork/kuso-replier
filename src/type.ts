@@ -2,6 +2,11 @@ import { z } from "zod";
 
 export const NotestockWebhookBodySceheme = z.object({
     id: z.string(),
+    tag: z.object({
+        href: z.string(),
+        type: z.string(),
+        name: z.string(),
+    }).array(),
     url: z.string(),
     notag: z.string(),
     content: z.string(),
