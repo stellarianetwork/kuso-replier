@@ -52,7 +52,7 @@ function createChatCompletionWithTimeout({
 
         const messages: ChatCompletionOptions["messages"] = [
             {
-                role: "assistant",
+                role: "system",
                 content: actor.descriptionToCompletion,
             },
             ...posts.map((post) => ({
