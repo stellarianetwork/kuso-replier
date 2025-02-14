@@ -2,7 +2,7 @@
 
 Let's do useless things with the cutting edge technology of 2023.
 
-Throw human-like replies to my posts using Notestock's webhook feature and ChatGPT API.
+Throw human-like replies to my posts using Notestock's webhook feature and OpenAI API.
 
 ## dev
 
