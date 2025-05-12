@@ -65,7 +65,7 @@ function createChatCompletionWithTimeout({
 
         openAI
             .createChatCompletion({
-                model: "gpt-4o",
+                model: "o3",
                 messages,
             })
             .then((chatCompletion) => {
