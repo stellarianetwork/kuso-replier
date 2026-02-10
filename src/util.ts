@@ -77,7 +77,7 @@ function findSplitPosition(
     // 空行とブレークポイントの位置を探す
     for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        if (currentLength + segment.segment.length > maxLength) {
+        if (currentLength + 1 > maxLength) {
             // 空行が見つかっている場合はそこで分割
             if (lastEmptyLinePos >= 0) {
                 return lastEmptyLinePos;
@@ -104,7 +104,7 @@ function findSplitPosition(
             lastBreakPos = i + 1;
         }
 
-        currentLength += segment.segment.length;
+        currentLength += 1;
     }
 
     return segments.length;

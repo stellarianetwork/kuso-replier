@@ -19,7 +19,7 @@ Deno.test("splitMessage() test - short message", () => {
 });
 
 Deno.test("splitMessage() test - long message with punctuation", () => {
-    const text = "これは長いメッセージです。".repeat(50); // 約600文字
+    const text = "これは長いメッセージです。".repeat(50); // 650文字
     const result = splitMessage(text, 500);
     // 500文字を超えるので少なくとも2つに分割される
     assertEquals(result.length >= 2, true);
@@ -32,7 +32,7 @@ Deno.test("splitMessage() test - long message with punctuation", () => {
 });
 
 Deno.test("splitMessage() test - message with newlines", () => {
-    const text = "1行目\n2行目\n3行目\n".repeat(20); // 約400文字
+    const text = "1行目\n2行目\n3行目\n".repeat(20); // 280文字
     const result = splitMessage(text, 200);
     // 200文字で分割される
     assertEquals(result.length >= 2, true);
