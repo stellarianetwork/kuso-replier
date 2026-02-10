@@ -13,6 +13,7 @@ import {
 import {
     createPostTextFromCompletion,
     getPosterType,
+    postAsThread,
 } from "./mastodon/util.ts";
 import { getAcctFromAttributedTo, getPostIdFromUrl } from "./notestock/util.ts";
 
@@ -116,15 +117,16 @@ serve(async (req: Request): Promise<Response> => {
             return new Response(null);
         }
 
-        await botClient.v1.statuses.create({
-            status: createPostTextFromCompletion(
+        await postAsThread(
+            botClient,
+            createPostTextFromCompletion(
                 actor.signature,
                 getAcctFromAttributedTo(post.attributedTo),
                 removeMentionFromText(completion)
             ),
-            inReplyToId: getPostIdFromUrl(post.url),
-            visibility: "unlisted",
-        });
+            getPostIdFromUrl(post.url),
+            "unlisted"
+        );
     } else {
         // 単一の投稿
 
@@ -176,15 +178,16 @@ serve(async (req: Request): Promise<Response> => {
             return new Response(null);
         }
 
-        await botClient.v1.statuses.create({
-            status: createPostTextFromCompletion(
+        await postAsThread(
+            botClient,
+            createPostTextFromCompletion(
                 actor.signature,
                 getAcctFromAttributedTo(post.attributedTo),
                 removeMentionFromText(completion)
             ),
-            inReplyToId: getPostIdFromUrl(post.url),
-            visibility: "unlisted",
-        });
+            getPostIdFromUrl(post.url),
+            "unlisted"
+        );
     }
 
     return new Response("you have nice body!");
