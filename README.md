@@ -42,14 +42,14 @@ Notestock側の設定 (https://notestock.osa-p.net/webhook.html)：
 
 ## scripts
 
-| script | 内容 |
-|---|---|
-| `pnpm dev` | `wrangler dev`で起動 |
-| `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm lint` | `oxlint` |
-| `pnpm format` / `pnpm format:check` | `oxfmt` (write / check) |
-| `pnpm test` | `node --test` で `src/**/*.test.ts` |
-| `pnpm ci` | typecheck/lint/format:check/test を並列実行 |
+| script                              | 内容                                        |
+| ----------------------------------- | ------------------------------------------- |
+| `pnpm dev`                          | `wrangler dev`で起動                        |
+| `pnpm typecheck`                    | `tsc --noEmit`                              |
+| `pnpm lint`                         | `oxlint`                                    |
+| `pnpm format` / `pnpm format:check` | `oxfmt` (write / check)                     |
+| `pnpm test`                         | `node --test` で `src/**/*.test.ts`         |
+| `pnpm check`                        | typecheck/lint/format:check/test を並列実行 |
 
 ## デプロイ
 

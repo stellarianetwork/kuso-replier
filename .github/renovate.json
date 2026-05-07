@@ -3,7 +3,5 @@
     "extends": ["config:best-practices"],
     "automerge": true,
     "platformAutomerge": true,
-    "packageRules": [
-        { "matchUpdateTypes": ["major"], "automerge": false }
-    ]
+    "packageRules": [{ "matchUpdateTypes": ["major"], "automerge": false }]
 }
