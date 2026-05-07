@@ -1,50 +1,52 @@
-import { assertEquals } from "https://deno.land/std@0.188.0/testing/asserts.ts";
+/* oxlint-disable typescript/no-floating-promises -- node:test の test() は Promise を返すが、ファイル内で順次 await する必要はない */
+import { equal, ok } from "node:assert/strict";
+import { test } from "node:test";
 import { addSignatureToText, removeSignatureFromText, splitMessage } from "./util.ts";
 
-Deno.test("addSignatureToText() test", () => {
+test("addSignatureToText() test", () => {
     const text = addSignatureToText("signature", "text");
-    assertEquals(text, "text [signature]");
+    equal(text, "text [signature]");
 });
 
-Deno.test("removeSignatureFromText() test", () => {
+test("removeSignatureFromText() test", () => {
     const text = removeSignatureFromText("signature", "text [signature]");
-    assertEquals(text, "text");
+    equal(text, "text");
 });
 
-Deno.test("splitMessage() test - short message", () => {
+test("splitMessage() test - short message", () => {
     const text = "これは短いメッセージです。";
     const result = splitMessage(text, 500);
-    assertEquals(result.length, 1);
-    assertEquals(result[0], text);
+    equal(result.length, 1);
+    equal(result[0], text);
 });
 
-Deno.test("splitMessage() test - long message with punctuation", () => {
+test("splitMessage() test - long message with punctuation", () => {
     const text = "これは長いメッセージです。".repeat(50); // 650文字
     const result = splitMessage(text, 500);
     // 500文字を超えるので少なくとも2つに分割される
-    assertEquals(result.length >= 2, true);
+    ok(result.length >= 2);
     // 各メッセージが500文字以下であることを確認
     for (const msg of result) {
-        assertEquals([...new Intl.Segmenter("ja", { granularity: "grapheme" }).segment(msg)].length <= 500, true);
+        ok([...new Intl.Segmenter("ja", { granularity: "grapheme" }).segment(msg)].length <= 500);
     }
     // 元のテキストが復元できることを確認
-    assertEquals(result.join(""), text);
+    equal(result.join(""), text);
 });
 
-Deno.test("splitMessage() test - message with newlines", () => {
+test("splitMessage() test - message with newlines", () => {
     const text = "1行目\n2行目\n3行目\n".repeat(20); // 280文字
     const result = splitMessage(text, 200);
     // 200文字で分割される
-    assertEquals(result.length >= 2, true);
+    ok(result.length >= 2);
     // 各メッセージが200文字以下であることを確認
     for (const msg of result) {
-        assertEquals([...new Intl.Segmenter("ja", { granularity: "grapheme" }).segment(msg)].length <= 200, true);
+        ok([...new Intl.Segmenter("ja", { granularity: "grapheme" }).segment(msg)].length <= 200);
     }
 });
 
-Deno.test("splitMessage() test - exactly at max length", () => {
+test("splitMessage() test - exactly at max length", () => {
     const text = "あ".repeat(500);
     const result = splitMessage(text, 500);
-    assertEquals(result.length, 1);
-    assertEquals(result[0], text);
+    equal(result.length, 1);
+    equal(result[0], text);
 });

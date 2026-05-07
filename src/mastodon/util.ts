@@ -1,7 +1,6 @@
-import { mastodon } from "masto";
+import type { mastodon } from "masto";
 import { config } from "../config.ts";
 import { addSignatureToText, splitMessage } from "../util.ts";
-import type { mastodon as mastodonTypes } from "masto";
 
 // 投稿がbotによるものかを判定する
 export function postIsByBot(post: mastodon.v1.Status) {
@@ -15,7 +14,7 @@ export function getPosterType(post: mastodon.v1.Status): "assistant" | "user" {
 export function createPostTextFromCompletion(
     signature: string,
     toAcct: string,
-    completion: string
+    completion: string,
 ) {
     if (config.BOT_USE_SIGNATURES) {
         return addSignatureToText(signature, `@${toAcct} ${completion}`);
@@ -27,10 +26,10 @@ export function createPostTextFromCompletion(
 const MASTODON_MAX_LENGTH = 500;
 
 export async function postAsThread(
-    client: mastodonTypes.rest.Client,
+    client: mastodon.rest.Client,
     status: string,
     inReplyToId: string,
-    visibility: mastodon.v1.StatusVisibility = "unlisted"
+    visibility: mastodon.v1.StatusVisibility = "unlisted",
 ) {
     const messages = splitMessage(status, MASTODON_MAX_LENGTH);
     let currentReplyId = inReplyToId;

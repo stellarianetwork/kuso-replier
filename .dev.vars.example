@@ -1,7 +1,7 @@
 DEBUG_FORCE_REPLY=false
 
 SECRET=mysupersecret
-ACTOR_JSONC_URL=null
+ACTOR_JSON_URL=https://example.com/actor.json
 LUCK_PERCENTAGE=0.85
 REACTION_ACCT_WHITELIST=User1,User2,User3
 BOT_USE_SIGNATURES=true
@@ -11,4 +11,4 @@ OPENAI_API_KEY=sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 MASTODON_BOT_HOST=https://stellaria.network
 MASTODON_BOT_ACCT=bot_testing
-MASTODON_BOT_TOKEN="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+MASTODON_BOT_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

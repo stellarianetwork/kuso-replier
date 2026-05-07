@@ -1,39 +1,47 @@
 # kuso-replier
 
-Let's do useless things with the cutting edge technology of 2023.
+Mastodon webhookでくだらないリプライを返すbot。Notestockのwebhook機能とOpenAI APIで実現。Cloudflare Workers + Honoで動く。
 
-Throw human-like replies to my posts using Notestock's webhook feature and OpenAI API.
+## セットアップ
+
+```bash
+pnpm install
+cp .dev.vars.example .dev.vars  # 値を埋める
+```
+
+新しい環境変数を増やしたら`src/cloudflare-env.d.ts`の`Cloudflare.Env`にも手で追加する。
+
+`actor.json`はリポジトリではなくHTTPで配信する形に統一した。`ACTOR_JSON_URL`に`actor.json.example`相当の内容を返すURLを設定する。
 
 ## dev
 
 ```bash
-# start the dev server
-deno task dev
+pnpm dev
 ```
 
-Notestock can't deliver posts directly to webhooks running on your computer, so you probably need something to bridge. My recommendation is [smee.io](https://smee.io/) (it's like ngrok for webhooks).
+`wrangler dev`が`http://localhost:8000`で起動する。NotestockからローカルWorkerにwebhookを届けるには[smee.io](https://smee.io/)などのブリッジを挟む。
 
 ```bash
-# First, open smee.io in your browser and create a new channel.
-
-# Install the smee client using npm. (only for the first time)
+# smee-clientを入れていなければ
 # npm install --global smee-client
-
-# Then, run the smee client.
 smee -u https://smee.io/abcdefg -p 8000
 ```
 
-Finally, set the webhook URL to `https://smee.io/abcdefg` in Notestock's settings page.
+Notestock側の設定 (https://notestock.osa-p.net/webhook.html)：
 
-- https://notestock.osa-p.net/webhook.html
-  - regular expression: `.*`
-  - webhook URL: `https://smee.io/abcdefg?secret=setYourSecretInEnv`
-  - method: POST
-  - Content-Type: `application/json`
-  - send body: `$JSON`
+- regular expression: `.*`
+- webhook URL: `https://smee.io/abcdefg?secret=mysupersecret`
+- method: POST
+- Content-Type: `application/json`
+- send body: `$JSON`
 
-## deploy
+## デプロイ
 
-Use deno deploy.
+Cloudflare Workers Buildsのダッシュボード設定でGit連携してビルドさせる方針なので、リポジトリ側に`wrangler.toml`もデプロイworkflowも置いていない。
 
-Almost the same as dev.
+ビルドコマンドは`pnpm install --frozen-lockfile`、デプロイコマンドは`pnpm dlx wrangler deploy src/index.ts --compatibility-date 2026-05-01 --compatibility-flag=nodejs_compat`あたりをダッシュボード側で指定する。
+
+Secrets/Varsはダッシュボードで登録する：
+
+- `SECRET` / `OPENAI_API_KEY` / `MASTODON_BOT_TOKEN` はSecretsとして登録
+- それ以外のキーはVarsで可
