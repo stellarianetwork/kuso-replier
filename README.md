@@ -10,11 +10,11 @@ pnpm install
 cp .dev.vars.example .dev.vars  # 値を埋める
 ```
 
-`.dev.vars`の内容は本番Secrets/Varsと1:1で対応する。新しい環境変数を増やしたら
-`src/cloudflare-env.d.ts`の`Cloudflare.Env`にも手で追加すること。
+新しい環境変数を増やしたら`src/cloudflare-env.d.ts`の`Cloudflare.Env`にも
+手で追加する。
 
 `actor.json`はリポジトリではなくHTTPで配信する形に統一した。`ACTOR_JSON_URL`に
-`actor.json.example`相当の内容を返すURLを設定する（コメント記法は使えない）。
+`actor.json.example`相当の内容を返すURLを設定する。
 
 ## dev
 
@@ -53,7 +53,3 @@ Secrets/Varsはダッシュボードで登録する：
 
 - `SECRET` / `OPENAI_API_KEY` / `MASTODON_BOT_TOKEN` はSecretsとして登録
 - それ以外のキーはVarsで可
-
-> [!IMPORTANT]
-> Deno Deploy時代に`ACTOR_JSONC_URL`を使っていた場合、新名`ACTOR_JSON_URL`への
-> 変更と、配信先ファイル形式のjsonc→json化（コメント不可）が必要。
