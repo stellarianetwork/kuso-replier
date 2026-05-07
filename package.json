@@ -1,26 +1,10 @@
 {
     "name": "kuso-replier",
     "version": "1.0.0",
-    "description": "Mastodon webhook reply bot powered by OpenAI, running on Cloudflare Workers",
     "private": true,
-    "type": "module",
+    "description": "Mastodon webhook reply bot powered by OpenAI, running on Cloudflare Workers",
     "license": "MIT",
-    "engines": {
-        "node": ">=24",
-        "pnpm": ">=11"
-    },
-    "devEngines": {
-        "runtime": {
-            "name": "node",
-            "version": ">=24",
-            "onFail": "error"
-        },
-        "packageManager": {
-            "name": "pnpm",
-            "version": ">=11",
-            "onFail": "error"
-        }
-    },
+    "type": "module",
     "scripts": {
         "dev": "wrangler dev src/index.ts --compatibility-date 2026-05-01 --compatibility-flag=nodejs_compat --port 8000",
         "typecheck": "tsc --noEmit",
@@ -46,6 +30,23 @@
         "oxlint": "^1.63.0",
         "oxlint-config-presets": "^0.1.8",
         "oxlint-tsgolint": "^0.22.1",
+        "typescript": "^6.0.3",
         "wrangler": "^4.88.0"
+    },
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": ">=11",
+            "onFail": "download"
+        },
+        "runtime": {
+            "name": "node",
+            "version": ">=24",
+            "onFail": "download"
+        }
+    },
+    "engines": {
+        "node": ">=24",
+        "pnpm": ">=11"
     }
 }
