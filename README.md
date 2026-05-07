@@ -40,17 +40,6 @@ Notestock側の設定 (https://notestock.osa-p.net/webhook.html)：
 - Content-Type: `application/json`
 - send body: `$JSON`
 
-## scripts
-
-| script                              | 内容                                        |
-| ----------------------------------- | ------------------------------------------- |
-| `pnpm dev`                          | `wrangler dev`で起動                        |
-| `pnpm typecheck`                    | `tsc --noEmit`                              |
-| `pnpm lint`                         | `oxlint`                                    |
-| `pnpm format` / `pnpm format:check` | `oxfmt` (write / check)                     |
-| `pnpm test`                         | `node --test` で `src/**/*.test.ts`         |
-| `pnpm check`                        | typecheck/lint/format:check/test を並列実行 |
-
 ## デプロイ
 
 Cloudflare Workers Buildsのダッシュボード設定でGit連携してビルドさせる方針なので、
